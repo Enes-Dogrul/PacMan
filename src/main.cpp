@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <iostream>
 
 int main()
@@ -52,8 +53,13 @@ int main()
     
     while (window -> isOpen())
     {
-
-
+        sf::Font font("/Users/enes/Desktop/PACMAN/src/arial.ttf");
+        sf::Text text(font);
+        text.setString(std::to_string(point));
+        text.setCharacterSize(24);
+        text.setFillColor(sf::Color::White);
+        text.setStyle(sf::Text::Bold);
+        
 
         while (const std::optional event = window ->pollEvent())
         {
@@ -70,14 +76,16 @@ int main()
                     if(!(harita[player_y][player_x+1])){
                         harita[player_y][player_x] = 0;
                         harita[player_y][player_x+1] = 2;
-                        player.setPosition({float (player_x) + 20.f,float (player_y)+20.f});                
+                        player.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
+                        window->draw(player);              
                     }
                     else if(harita[player_y][player_x+1]==3){
                         point++;
-                        harita[player_y][player_x] = 2;
-                        harita[player_y][player_x + 1] = 0;
+                        harita[player_y][player_x] = 0;
+                        harita[player_y][player_x + 1] = 2;
                         
-                        player.setPosition({float (player_x) + 20.f,float (player_y)+20.f});  
+                        player.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
+                        window->draw(player);
                     }
                 }
                 else if(keyPressed->scancode == sf::Keyboard::Scancode::A){
@@ -85,14 +93,16 @@ int main()
                         harita[player_y][player_x] = 0;
                         harita[player_y][player_x-1] = 2;
                         
-                        player.setPosition({float (player_x) + 20.f,float (player_y)+20.f});
+                        player.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
+                        window->draw(player);
                     }
                     else if(harita[player_y][player_x-1]==3){
                         point++;
                          harita[player_y][player_x - 1] = 2;
                         harita[player_y][player_x] = 0;
                        
-                        player.setPosition({float (player_x) + 20.f,float (player_y)+20.f});  
+                        player.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
+                        window->draw(player);
                     }                    
                 }
                 else if(keyPressed->scancode == sf::Keyboard::Scancode::S){
@@ -100,13 +110,15 @@ int main()
                         harita[player_y][player_x] = 0;
                         harita[player_y+1][player_x] = 2;
                         
-                        player.setPosition({float (player_x) + 20.f,float (player_y)+20.f});
+                        player.setPosition({float (player_x * 40.f) + 20.f,float (player_y* 40.f)+20.f});
+                        window->draw(player);
                         }
                     else if(harita[player_y+1][player_x]==3){
                         point++;
                         harita[player_y+1][player_x] = 2;
                         harita[player_y][player_x] = 0;
                         player.setPosition({float (player_x * 40.f) + 20.f,float (player_y * 40.f)+20.f});
+                        window->draw(player);
                     }
                 }
                 else if(keyPressed->scancode == sf::Keyboard::Scancode::W){
@@ -115,6 +127,7 @@ int main()
                         harita[player_y-1][player_x] = 2;
                         
                         player.setPosition({float (player_x) + 20.f,float (player_y)+20.f});
+                        window->draw(player);
                     }
                     else if(harita[player_y-1][player_x]==3){
                         point++;
@@ -122,7 +135,8 @@ int main()
                         harita[player_y][player_x] = 0;
                         
                         player.setPosition({float (player_x) + 20.f,float (player_y)+20.f});
-                        window->clear();
+                        window->draw(player);
+                       
                     }
                 }
             }
@@ -153,6 +167,7 @@ int main()
             }
         }
         window->draw(player);
+        window->draw(text);
         window->display();
         
     }
