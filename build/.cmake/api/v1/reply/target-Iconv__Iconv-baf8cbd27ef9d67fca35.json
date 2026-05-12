@@ -1,0 +1,69 @@
+{
+	"abstract" : true,
+	"backtrace" : 3,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"find_package",
+			"set_property"
+		],
+		"files" : 
+		[
+			"/opt/homebrew/share/cmake/Modules/FindIconv.cmake",
+			"build/_deps/flac-src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 81,
+				"parent" : 0
+			},
+			{
+				"file" : 0,
+				"parent" : 1
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 199,
+				"parent" : 2
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 201,
+				"parent" : 2
+			}
+		]
+	},
+	"codemodelVersion" : 
+	{
+		"major" : 2,
+		"minor" : 10
+	},
+	"id" : "Iconv::Iconv::@d05cb0ff2bec6fe78f9d",
+	"imported" : true,
+	"interfaceLinkLibraries" : 
+	[
+		{
+			"backtrace" : 4,
+			"fragment" : "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/libiconv.tbd"
+		}
+	],
+	"local" : true,
+	"name" : "Iconv::Iconv",
+	"paths" : 
+	{
+		"build" : "_deps/flac-build",
+		"source" : "build/_deps/flac-src"
+	},
+	"sources" : [],
+	"type" : "INTERFACE_LIBRARY"
+}

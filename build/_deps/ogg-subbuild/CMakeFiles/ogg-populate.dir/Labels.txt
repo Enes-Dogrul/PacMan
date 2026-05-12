@@ -1,0 +1,14 @@
+# Target labels
+ ogg-populate
+# Source files and their labels
+/Users/enes/Desktop/PACMAN/build/_deps/ogg-subbuild/CMakeFiles/ogg-populate
+/Users/enes/Desktop/PACMAN/build/_deps/ogg-subbuild/CMakeFiles/ogg-populate.rule
+/Users/enes/Desktop/PACMAN/build/_deps/ogg-subbuild/CMakeFiles/ogg-populate-complete.rule
+/Users/enes/Desktop/PACMAN/build/_deps/ogg-subbuild/ogg-populate-prefix/src/ogg-populate-stamp/ogg-populate-build.rule
+/Users/enes/Desktop/PACMAN/build/_deps/ogg-subbuild/ogg-populate-prefix/src/ogg-populate-stamp/ogg-populate-configure.rule
+/Users/enes/Desktop/PACMAN/build/_deps/ogg-subbuild/ogg-populate-prefix/src/ogg-populate-stamp/ogg-populate-download.rule
+/Users/enes/Desktop/PACMAN/build/_deps/ogg-subbuild/ogg-populate-prefix/src/ogg-populate-stamp/ogg-populate-install.rule
+/Users/enes/Desktop/PACMAN/build/_deps/ogg-subbuild/ogg-populate-prefix/src/ogg-populate-stamp/ogg-populate-mkdir.rule
+/Users/enes/Desktop/PACMAN/build/_deps/ogg-subbuild/ogg-populate-prefix/src/ogg-populate-stamp/ogg-populate-patch.rule
+/Users/enes/Desktop/PACMAN/build/_deps/ogg-subbuild/ogg-populate-prefix/src/ogg-populate-stamp/ogg-populate-test.rule
+/Users/enes/Desktop/PACMAN/build/_deps/ogg-subbuild/ogg-populate-prefix/src/ogg-populate-stamp/ogg-populate-update.rule
