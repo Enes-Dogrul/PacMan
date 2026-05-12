@@ -28,11 +28,10 @@ int main()
     pointShape.setFillColor(sf::Color::White);
     pointShape.setOrigin({0.f,0.f});
     sf::CircleShape player(20.f);
-    
-    player.setFillColor(sf::Color::White);
-    player.setOrigin({20.f,20.f});
-    player.setTexture(&playerTexture);
 
+    sf::Sprite pacman(playerTexture);
+    pacman.setScale({0.15f,0.15f});
+    pacman.setOrigin({100.f,100.f});
     int harita[15][20] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -76,7 +75,7 @@ int main()
                     if(!(harita[player_y][player_x+1])){
                         harita[player_y][player_x] = 0;
                         harita[player_y][player_x+1] = 2;
-                        player.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
+                        pacman.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
                         window->draw(player);              
                     }
                     else if(harita[player_y][player_x+1]==3){
@@ -84,7 +83,7 @@ int main()
                         harita[player_y][player_x] = 0;
                         harita[player_y][player_x + 1] = 2;
                         
-                        player.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
+                        pacman.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
                         window->draw(player);
                     }
                 }
@@ -93,7 +92,7 @@ int main()
                         harita[player_y][player_x] = 0;
                         harita[player_y][player_x-1] = 2;
                         
-                        player.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
+                        pacman.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
                         window->draw(player);
                     }
                     else if(harita[player_y][player_x-1]==3){
@@ -101,7 +100,7 @@ int main()
                          harita[player_y][player_x - 1] = 2;
                         harita[player_y][player_x] = 0;
                        
-                        player.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
+                        pacman.setPosition({float (player_x* 40.f) + 20.f,float (player_y* 40.f)+20.f});
                         window->draw(player);
                     }                    
                 }
@@ -110,14 +109,14 @@ int main()
                         harita[player_y][player_x] = 0;
                         harita[player_y+1][player_x] = 2;
                         
-                        player.setPosition({float (player_x * 40.f) + 20.f,float (player_y* 40.f)+20.f});
+                        pacman.setPosition({float (player_x * 40.f) + 20.f,float (player_y* 40.f)+20.f});
                         window->draw(player);
                         }
                     else if(harita[player_y+1][player_x]==3){
                         point++;
                         harita[player_y+1][player_x] = 2;
                         harita[player_y][player_x] = 0;
-                        player.setPosition({float (player_x * 40.f) + 20.f,float (player_y * 40.f)+20.f});
+                        pacman.setPosition({float (player_x * 40.f) + 20.f,float (player_y * 40.f)+20.f});
                         window->draw(player);
                     }
                 }
@@ -126,7 +125,7 @@ int main()
                         harita[player_y][player_x] = 0;
                         harita[player_y-1][player_x] = 2;
                         
-                        player.setPosition({float (player_x) + 20.f,float (player_y)+20.f});
+                        pacman.setPosition({float (player_x) + 20.f,float (player_y)+20.f});
                         window->draw(player);
                     }
                     else if(harita[player_y-1][player_x]==3){
@@ -134,7 +133,7 @@ int main()
                         harita[player_y - 1][player_x] = 2;
                         harita[player_y][player_x] = 0;
                         
-                        player.setPosition({float (player_x) + 20.f,float (player_y)+20.f});
+                        pacman.setPosition({float (player_x) + 20.f,float (player_y)+20.f});
                         window->draw(player);
                        
                     }
@@ -154,7 +153,7 @@ int main()
                 else if(harita[y][x] == 2){
                     player_x = x;
                     player_y = y;
-                    player.setPosition({((x*40.f)+20.f),((y*40.f)+20.f)});
+                    pacman.setPosition({((x*40.f)+20.f),((y*40.f)+20.f)});
                 }
                 else if(harita[y][x] == 3)
                 {
@@ -166,7 +165,7 @@ int main()
                 
             }
         }
-        window->draw(player);
+        window->draw(pacman);
         window->draw(text);
         window->display();
         
