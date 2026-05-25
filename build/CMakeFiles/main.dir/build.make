@@ -96,10 +96,16 @@ main_EXTERNAL_OBJECTS =
 bin/main.app/Contents/MacOS/main: CMakeFiles/main.dir/src/main.cpp.o
 bin/main.app/Contents/MacOS/main: CMakeFiles/main.dir/build.make
 bin/main.app/Contents/MacOS/main: _deps/sfml-build/lib/libsfml-graphics.a
+bin/main.app/Contents/MacOS/main: _deps/sfml-build/lib/libsfml-audio.a
 bin/main.app/Contents/MacOS/main: _deps/sfml-build/lib/libsfml-window.a
-bin/main.app/Contents/MacOS/main: _deps/sfml-build/lib/libsfml-system.a
 bin/main.app/Contents/MacOS/main: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework
 bin/main.app/Contents/MacOS/main: _deps/sfml-build/lib/libfreetype.a
+bin/main.app/Contents/MacOS/main: _deps/sfml-build/lib/libsfml-system.a
+bin/main.app/Contents/MacOS/main: _deps/sfml-build/lib/libvorbisfile.a
+bin/main.app/Contents/MacOS/main: _deps/sfml-build/lib/libvorbisenc.a
+bin/main.app/Contents/MacOS/main: _deps/sfml-build/lib/libvorbis.a
+bin/main.app/Contents/MacOS/main: _deps/sfml-build/lib/libFLAC.a
+bin/main.app/Contents/MacOS/main: _deps/sfml-build/lib/libogg.a
 bin/main.app/Contents/MacOS/main: CMakeFiles/main.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/enes/Desktop/PACMAN/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable bin/main.app/Contents/MacOS/main"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)
