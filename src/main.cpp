@@ -413,18 +413,52 @@ int main() {
     std::vector<sf::Texture> texUp(3), texDown(3), texLeft(3), texRight(3);
     sf::Texture blinkyTexture, pinkyTexture, inkyTexture, clydeTexture, scaredTexture;
 
-    blinkyTexture.loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/blinky.png");
+    if(!blinkyTexture.loadFromFile("./textures/pacman/blinky.png")){
+        std::cerr << "Dosya Açılamadı ./textures/pacman/blinky.png";
+        return 1;
+    }
     
-    pinkyTexture.loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/pinky.png");
-    inkyTexture.loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/inky.png");
-    clydeTexture.loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/clyde.png");
-    scaredTexture.loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/blue_ghost.png");
+    if(!pinkyTexture.loadFromFile("./textures/pacman/pinky.png")){
+        std::cerr << "Dosya Açılamadı ./textures/pacman/pinky.png";
+        return 1;
+    }
+    if(!inkyTexture.loadFromFile("./textures/pacman/inky.png"))
+    {
+        std::cerr << "Dosya Açılamadı ./textures/pacman/inky.png";
+        return 1;
+    }
+    if(!clydeTexture.loadFromFile("./textures/pacman/clyde.png"))
+    {
+        std::cerr << "Dosya Açılamadı ./textures/pacman/clyde.png";
+        return 1;
+    }
+    if(!scaredTexture.loadFromFile("./textures/pacman/blue_ghost.png"))
+    {
+        std::cerr << "Dosya Açılamadı ./textures/pacman/blue_ghost.png";
+        return 1;
+    }
 
     for (int i = 0; i < 3; i++) {
-        texUp[i].loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/Up_" + std::to_string(i + 1) + ".png");
-        texDown[i].loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/Down_" + std::to_string(i + 1) + ".png");
-        texLeft[i].loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/Left_" + std::to_string(i + 1) + ".png");
-        texRight[i].loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/Right_" + std::to_string(i + 1) + ".png");
+        if(!texUp[i].loadFromFile("./textures/pacman/Up_" + std::to_string(i + 1) + ".png"))
+        {
+            std::cerr << "Dosya Açılamadı ./textures/pacman/Up_" + std::to_string(i + 1) + ".png";
+            return 1;
+        }
+        if(!texDown[i].loadFromFile("./textures/pacman/Down_" + std::to_string(i + 1) + ".png"))
+        {
+            std::cerr << "Dosya Açılamadı ./textures/pacman/Down_" + std::to_string(i + 1) + ".png";
+            return 1;
+        }
+        if(!texLeft[i].loadFromFile("./textures/pacman/Left_" + std::to_string(i + 1) + ".png"))
+        {
+            std::cerr << "Dosya Açılamadı ./textures/pacman/Left_" + std::to_string(i + 1) + ".png";
+            return 1;
+        }
+        if(!texRight[i].loadFromFile("./textures/pacman/Right_" + std::to_string(i + 1) + ".png"))
+        {
+            std::cerr << "Dosya Açılamadı ./textures/pacman/Right_" + std::to_string(i + 1) + ".png";
+            return 1;
+        }
     }
 
     float texW = texRight[0].getSize().x;
@@ -612,10 +646,10 @@ int main() {
     lifeIcon.setScale({(tileSize / texW) * lifeIconScale, (tileSize / texH) * lifeIconScale});
 
     sf::Clock deltaClock;
-    sf::Font font("/Users/enes/Desktop/PACMAN/src/arial.ttf");
+    sf::Font font("./src/arial.ttf");
     sf::Text text(font);
 
-    const std::string RES = "/Users/enes/Desktop/PACMAN/resources/";
+    const std::string RES = "./resources/";
     sf::SoundBuffer chompBuffer(RES + "chomp.wav");
     sf::SoundBuffer powerBuffer(RES + "power_pellet.wav");
     sf::SoundBuffer eatGhostBuffer(RES + "eat_ghost.wav");

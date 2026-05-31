@@ -1,1 +1,10 @@
 https://github.com/Enes-Dogrul/PacMan
+
+MB fazlalığından dolayı SFML kütüphanesi eklenemedi. Gerekli dosyalar githubta mevcut. 
+
+SFML 3.0.1
+
+
+-----
+
+Bir problemde SES dosyaları ve texturelar benim dosya yoluma göre tanımlı. Maalesefki onu da çözemedim. Kontrol edecek kişi mümkünse 
