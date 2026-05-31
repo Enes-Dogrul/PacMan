@@ -414,6 +414,7 @@ int main() {
     sf::Texture blinkyTexture, pinkyTexture, inkyTexture, clydeTexture, scaredTexture;
 
     blinkyTexture.loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/blinky.png");
+    
     pinkyTexture.loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/pinky.png");
     inkyTexture.loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/inky.png");
     clydeTexture.loadFromFile("/Users/enes/Desktop/PACMAN/textures/pacman/clyde.png");
@@ -567,6 +568,28 @@ int main() {
     bool inky_moving   = false;
     bool clyde_moving  = false;
 
+    bool blinky_eaten = false;
+    bool pinky_eaten  = false;
+    bool inky_eaten   = false;
+    bool clyde_eaten  = false;
+
+    bool blinky_returning = false;
+    bool pinky_returning  = false;
+    bool inky_returning   = false;
+    bool clyde_returning  = false;
+
+    sf::Clock blinky_eatenClock;
+    sf::Clock pinky_eatenClock;
+    sf::Clock inky_eatenClock;
+    sf::Clock clyde_eatenClock;
+    float eatenWait = 3.0f;
+
+    sf::Clock releaseClock;
+    float blinky_release = 1.0f;
+    float pinky_release  = 2.0f;
+    float inky_release   = 4.0f;
+    float clyde_release  = 6.0f;
+
     float player_speed = 150.f;
     float blinky_speed = 100.f;
     float pinky_speed  = 110.f;
@@ -649,6 +672,16 @@ int main() {
 
         currentState = State::Right;
         previousState = State::Right;
+
+        blinky_eaten = false;
+        pinky_eaten  = false;
+        inky_eaten   = false;
+        clyde_eaten  = false;
+
+        blinky_returning = false;
+        pinky_returning  = false;
+        inky_returning   = false;
+        clyde_returning  = false;
     };
 
     auto advanceLevel = [&]() {
@@ -687,8 +720,9 @@ int main() {
         pacman.setTexture((*f)[deathFrame]);
     };
 
-    auto eatOrDie = [&](int& gx, int& gy, int& tgx, int& tgy, float& gpx, float& gpy, bool& moving, int sx, int sy) {
+    auto eatOrDie = [&](int& gx, int& gy, int& tgx, int& tgy, float& gpx, float& gpy, bool& moving, bool& eaten, bool& returning, sf::Clock& eatenClock, int sx, int sy) {
         if (isDying) return;
+        if (eaten) return;
         float dx = gpx - ppx;
         float dy = gpy - ppy;
         float r = tileSize * 0.6f;
@@ -703,6 +737,9 @@ int main() {
                 gpx = sx * tileSize + tileSize / 2.f + offsetX;
                 gpy = sy * tileSize + tileSize / 2.f + offsetY;
                 moving = false;
+                eaten = true;
+                returning = true;
+                eatenClock.restart();
             } else {
                 triggerDeath();
             }
@@ -723,7 +760,7 @@ int main() {
         text.setPosition({offsetX, 8.f});
         window->draw(text);
 
-        text.setString("Skor: " + std::to_string(highScore));
+        text.setString("En Yuksek Skor: " + std::to_string(highScore));
         sf::FloatRect hb = text.getLocalBounds();
         text.setPosition({width / 2.f - hb.size.x / 2.f, 8.f});
         window->draw(text);
@@ -931,6 +968,7 @@ int main() {
             if (readyClock.getElapsedTime().asSeconds() >= readyDuration) {
                 ready = false;
                 deltaClock.restart();
+                releaseClock.restart();
                 sirenSound.play();
                 continue;
             }
@@ -1027,6 +1065,14 @@ int main() {
         if (ghostMode == GhostMode::Flee && fleeClock.getElapsedTime().asSeconds() >= fleeDuration) {
             ghostMode = GhostMode::Chase;
             ghostsEatenThisFlee = 0;
+            blinky_eaten = false;
+            pinky_eaten  = false;
+            inky_eaten   = false;
+            clyde_eaten  = false;
+            blinky_returning = false;
+            pinky_returning  = false;
+            inky_returning   = false;
+            clyde_returning  = false;
             sirenSound.play();
         }
 
@@ -1035,15 +1081,27 @@ int main() {
             bool scaredVisible = true;
             if (t > fleeDuration - 2.0f) scaredVisible = (((int)(t * 6)) % 2 == 0);
 
-            if (scaredVisible) {
+            if (!blinky_eaten && scaredVisible) {
                 blinkySprite.setTexture(scaredTexture);
-                pinkySprite.setTexture(scaredTexture);
-                inkySprite.setTexture(scaredTexture);
-                clydeSprite.setTexture(scaredTexture);
             } else {
                 blinkySprite.setTexture(blinkyTexture);
+            }
+
+            if (!pinky_eaten && scaredVisible) {
+                pinkySprite.setTexture(scaredTexture);
+            } else {
                 pinkySprite.setTexture(pinkyTexture);
+            }
+
+            if (!inky_eaten && scaredVisible) {
+                inkySprite.setTexture(scaredTexture);
+            } else {
                 inkySprite.setTexture(inkyTexture);
+            }
+
+            if (!clyde_eaten && scaredVisible) {
+                clydeSprite.setTexture(scaredTexture);
+            } else {
                 clydeSprite.setTexture(clydeTexture);
             }
         } else {
@@ -1082,6 +1140,14 @@ int main() {
                     remainingDots--;
                     ghostMode = GhostMode::Flee;
                     ghostsEatenThisFlee = 0;
+                    blinky_eaten = false;
+                    pinky_eaten  = false;
+                    inky_eaten   = false;
+                    clyde_eaten  = false;
+                    blinky_returning = false;
+                    pinky_returning  = false;
+                    inky_returning   = false;
+                    clyde_returning  = false;
                     fleeClock.restart();
                     sirenSound.pause();
                     powerSound.play();
@@ -1129,11 +1195,18 @@ int main() {
         }
 
         if (!blinky_moving) {
-            Point next;
-            if (ghostMode == GhostMode::Flee) {
-                next = getFleeNextStep(harita, blinky_gx, blinky_gy, player_gx, player_gy);
-            } else {
-                next = getBlinkyNextStep(harita, blinky_gx, blinky_gy, player_gx, player_gy);
+            Point next = {-1, -1};
+
+            if (blinky_returning && blinky_eatenClock.getElapsedTime().asSeconds() >= eatenWait) {
+                blinky_returning = false;
+            }
+
+            if (releaseClock.getElapsedTime().asSeconds() >= blinky_release && !blinky_returning) {
+                if (ghostMode == GhostMode::Flee && !blinky_eaten) {
+                    next = getFleeNextStep(harita, blinky_gx, blinky_gy, player_gx, player_gy);
+                } else {
+                    next = getBlinkyNextStep(harita, blinky_gx, blinky_gy, player_gx, player_gy);
+                }
             }
 
             if (next.x >= 0) {
@@ -1173,11 +1246,18 @@ int main() {
         }
 
         if (!inky_moving) {
-            Point next;
-            if (ghostMode == GhostMode::Flee) {
-                next = getFleeNextStep(harita, inky_gx, inky_gy, player_gx, player_gy);
-            } else {
-                next = getInkyNextStep(harita, inky_gx, inky_gy, blinky_gx, blinky_gy, player_gx, player_gy, currentState);
+            Point next = {-1, -1};
+
+            if (inky_returning && inky_eatenClock.getElapsedTime().asSeconds() >= eatenWait) {
+                inky_returning = false;
+            }
+
+            if (releaseClock.getElapsedTime().asSeconds() >= inky_release && !inky_returning) {
+                if (ghostMode == GhostMode::Flee && !inky_eaten) {
+                    next = getFleeNextStep(harita, inky_gx, inky_gy, player_gx, player_gy);
+                } else {
+                    next = getInkyNextStep(harita, inky_gx, inky_gy, blinky_gx, blinky_gy, player_gx, player_gy, currentState);
+                }
             }
 
             if (next.x >= 0) {
@@ -1217,11 +1297,18 @@ int main() {
         }
 
         if (!pinky_moving) {
-            Point next;
-            if (ghostMode == GhostMode::Flee) {
-                next = getFleeNextStep(harita, pinky_gx, pinky_gy, player_gx, player_gy);
-            } else {
-                next = getPinkyNextStep(harita, pinky_gx, pinky_gy, player_gx, player_gy, currentState);
+            Point next = {-1, -1};
+
+            if (pinky_returning && pinky_eatenClock.getElapsedTime().asSeconds() >= eatenWait) {
+                pinky_returning = false;
+            }
+
+            if (releaseClock.getElapsedTime().asSeconds() >= pinky_release && !pinky_returning) {
+                if (ghostMode == GhostMode::Flee && !pinky_eaten) {
+                    next = getFleeNextStep(harita, pinky_gx, pinky_gy, player_gx, player_gy);
+                } else {
+                    next = getPinkyNextStep(harita, pinky_gx, pinky_gy, player_gx, player_gy, currentState);
+                }
             }
 
             if (next.x >= 0) {
@@ -1261,11 +1348,18 @@ int main() {
         }
 
         if (!clyde_moving) {
-            Point next;
-            if (ghostMode == GhostMode::Flee) {
-                next = getFleeNextStep(harita, clyde_gx, clyde_gy, player_gx, player_gy);
-            } else {
-                next = getClydeNextStep(harita, clyde_gx, clyde_gy, player_gx, player_gy);
+            Point next = {-1, -1};
+
+            if (clyde_returning && clyde_eatenClock.getElapsedTime().asSeconds() >= eatenWait) {
+                clyde_returning = false;
+            }
+
+            if (releaseClock.getElapsedTime().asSeconds() >= clyde_release && !clyde_returning) {
+                if (ghostMode == GhostMode::Flee && !clyde_eaten) {
+                    next = getFleeNextStep(harita, clyde_gx, clyde_gy, player_gx, player_gy);
+                } else {
+                    next = getClydeNextStep(harita, clyde_gx, clyde_gy, player_gx, player_gy);
+                }
             }
 
             if (next.x >= 0) {
@@ -1304,10 +1398,10 @@ int main() {
             }
         }
 
-        eatOrDie(blinky_gx, blinky_gy, blinky_tgx, blinky_tgy, bpx, bpy, blinky_moving, blinky_spawn_x, blinky_spawn_y);
-        eatOrDie(pinky_gx,  pinky_gy,  pinky_tgx,  pinky_tgy,  pkx, pky, pinky_moving,  pinky_spawn_x,  pinky_spawn_y);
-        eatOrDie(inky_gx,   inky_gy,   inky_tgx,   inky_tgy,   ikx, iky, inky_moving,   inky_spawn_x,   inky_spawn_y);
-        eatOrDie(clyde_gx,  clyde_gy,  clyde_tgx,  clyde_tgy,  ckx, cky, clyde_moving,  clyde_spawn_x,  clyde_spawn_y);
+        eatOrDie(blinky_gx, blinky_gy, blinky_tgx, blinky_tgy, bpx, bpy, blinky_moving, blinky_eaten, blinky_returning, blinky_eatenClock, blinky_spawn_x, blinky_spawn_y);
+        eatOrDie(pinky_gx,  pinky_gy,  pinky_tgx,  pinky_tgy,  pkx, pky, pinky_moving,  pinky_eaten,  pinky_returning,  pinky_eatenClock,  pinky_spawn_x,  pinky_spawn_y);
+        eatOrDie(inky_gx,   inky_gy,   inky_tgx,   inky_tgy,   ikx, iky, inky_moving,   inky_eaten,   inky_returning,   inky_eatenClock,   inky_spawn_x,   inky_spawn_y);
+        eatOrDie(clyde_gx,  clyde_gy,  clyde_tgx,  clyde_tgy,  ckx, cky, clyde_moving,  clyde_eaten,  clyde_returning,  clyde_eatenClock,  clyde_spawn_x,  clyde_spawn_y);
 
         if (point > highScore) highScore = point;
 

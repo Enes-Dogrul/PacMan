@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 
-# Eski dependency policy uyumluluğu
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
-# VS Code'un başlık dosyalarını (FetchContent ile inenler dahil) bulması için
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-# DİKKAT: project(...) satırından ÖNCE derleyiciyi zorla tanımlıyoruz
 if(APPLE)
     set(CMAKE_C_COMPILER "/usr/bin/clang")
     set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
