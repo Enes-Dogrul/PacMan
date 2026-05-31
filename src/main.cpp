@@ -17,7 +17,7 @@ enum class GhostMode { Chase, Flee };
 const int HARITA_SATIR = 36;
 const int HARITA_SUTUN = 28;
 
-const std::string HIGHSCORE_FILE = "/Users/enes/Desktop/PACMAN/src/highscore.txt";
+const std::string HIGHSCORE_FILE = "./src/highscore.txt";
 
 Point applyTunnel(int x, int y) {
     if (y == 14 && x < 0) return {HARITA_SUTUN - 1, y};
